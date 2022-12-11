@@ -1,0 +1,225 @@
+//// mysql dump
+-- phpMyAdmin SQL Dump
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost
+-- Czas generowania: 19 Wrz 2022, 09:01
+-- Wersja serwera: 10.4.20-MariaDB
+-- Wersja PHP: 7.4.22
+ 
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+ 
+ 
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+ 
+--
+-- Baza danych: `xxxx`
+--
+ 
+-- --------------------------------------------------------
+ 
+--
+-- Struktura tabeli dla tabeli `imiona`
+--
+ 
+CREATE TABLE `imiona` (
+  `id` int(11) NOT NULL,
+  `imie` varchar(100) NOT NULL,
+  `nazwisko` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ 
+--
+-- Zrzut danych tabeli `imiona`
+--
+ 
+INSERT INTO `imiona` (`id`, `imie`, `nazwisko`) VALUES
+(1, 'Maciej', 'Konio'),
+(2, 'Fred', 'Astair'),
+(3, 'Lolek', 'Testowy'),
+(4, 'Lolek', 'Testowy'),
+(5, 'Lolek', 'Testowy'),
+(6, 'Lolek', 'Testowy'),
+(7, 'Lolek', 'Testowy'),
+(8, 'Lolek', 'Testowy'),
+(9, 'ffdfdf', 'lklklk'),
+(10, 'ąśćźłó', '#@!#%@#^%&%$^');
+ 
+--
+-- Indeksy dla zrzutów tabel
+--
+ 
+--
+-- Indeksy dla tabeli `imiona`
+--
+ALTER TABLE `imiona`
+  ADD PRIMARY KEY (`id`);
+ 
+--
+-- AUTO_INCREMENT dla zrzuconych tabel
+--
+ 
+--
+-- AUTO_INCREMENT dla tabeli `imiona`
+--
+ALTER TABLE `imiona`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+COMMIT;
+ 
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+ 
+ 
+ 
+/// index.php
+<meta charset="utf-8">
+ 
+<pre>
+<form action="" method="get">
+    <input type="text" name="i">
+    <input type="text" name="n">
+    <input type="submit">
+</form>
+<?php
+include("hidden.php"); // require
+// include_once    /    require_once
+$mysqli = new mysqli($host, $user, $passwd, 'xxxx');
+// print_r($mysqli);
+$result = $mysqli->query("select * from imiona");
+var_dump($result);
+$rows = $result->fetch_all(MYSQLI_ASSOC); // MYSQLI_ASSOC  MYSQLI_BOTH
+print_r($rows);
+echo $rows[0]["imie"];
+// select count(*) as ile from hasla where login='root' and passwd='tajne'
+// select count(*) as ile from hasla where login='".$_POST['user']."' and passwd='tajne'
+// POST ->      ' or 1=1 --
+// select count(*) as ile from hasla where login='' or 1=1 -- ' and passwd='tajne'
+// INIEKCJE SQL !!!!
+$stmt = $mysqli->prepare("insert into imiona(imie,nazwisko) values(?,?)");
+print_r($_GET);
+echo "insert into imiona(imie,nazwisko) values('".$_GET['i']."','".$_GET['n']."')";
+$stmt->bind_param("ss", $_GET['i'],$_GET['n']);
+$stmt->execute();
+// czcionki narodowe !!!
+// $mysqli->query("SET NAMES utf8");
+$mysqli->close(); // !!!!
+ 
+?>
+ 
+ 
+ 
+/// hidden.php
+<?php
+$host="localhost";
+$user="root";
+$passwd="";
+?>
+
+
+
+
+moje:
+CREATE TABLE `flagi` (
+  `id` int(11) NOT NULL,
+  `flag` varchar(100) NOT NULL,
+  `nominal` varchar(100) NOT NULL,
+  `nrkat` varchar(100) NOT NULL,
+  `stop` varchar(100) NOT NULL,
+  `rok` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `flagi`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `flagi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+COMMIT;
+
+ALTER TABLE `flagi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+COMMIT;
+
+INSERT INTO `flagi` (`id`, `flag`, `nominal`, `nrkat`, `stop`, `rok`) VALUES
+(1, 'Albania', 'test', '2', 'bronze', 1984),
+(2, 'Belgia', 'test', '#123', 'gold', 2000); 
+
+
+users:
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `role` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+COMMIT;
+
+INSERT INTO `users` (`id`, `login`, `password`, `role`) VALUES
+(1, 'a', 'a', 'admin'),
+(2, 'w', 'w', 'worker'),
+(3, 'u', 'u', 'user');
+
+
+wykres:
+
+CREATE TABLE `wykres` (
+  `id` int(11) NOT NULL,
+  `stan` varchar(100) NOT NULL,
+  `temp` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `wykres`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `wykres`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+COMMIT;
+
+INSERT INTO `wykres` (`id`, `stan`, `temp`) VALUES
+(1, 'pomiar', 36.4),
+(2, 'pomiar', 36.3),
+(3, 'pomiar', 36.2),
+(4, 'pomiar', 36.3),
+(5, 'pomiar', 36.4),
+(6, 'pomiar', 36.35),
+(7, 'pomiar', 36.4),
+(8, 'pomiar', 36.2),
+(9, 'pomiar', 36.4),
+(10, 'pomiar', 36.3),
+(11, 'pomiar', 36.2),
+(12, 'pomiar', 36.7),
+(13, 'pomiar', 36.1),
+(14, 'pomiar', 36.6),
+(15, 'pomiar', 36.6),
+(16, 'pomiar', 36.7),
+(17, 'pomiar', 36.6),
+(18, 'pomiar', 36.7),
+(19, 'pomiar', 36.7),
+(20, 'brak', 0),
+(21, 'choroba', 0),
+(22, 'choroba', 0),
+(23, 'brak', 0),
+(24, 'brak', 0),
+(25, 'brak', 0),
+(26, 'pomiar', 36.5),
+(27, 'pomiar', 36.6),
+(28, 'pomiar', 36.6),
+(29, 'pomiar', 36.6),
+(30, 'pomiar', 36.6),
+(31, 'pomiar', 36.6);
+
+
+
+
+choroba / brak / pomiar
