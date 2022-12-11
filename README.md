@@ -1,7 +1,7 @@
 # wykresPHP
 
 School project 2022<br>
-PHP + SQL + HTML + CSS + JS + AJAX
+PHP + SQL + HTML + CSS + JS + AJAX + TCPDF
 
 ## Screenshots
 
